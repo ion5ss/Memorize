@@ -8,7 +8,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Memorize!").font(.title)
+            Text("Memorize!").font(.title).fontWeight(.medium)
             ScrollView {
                 cardBuilder
             }
@@ -21,8 +21,9 @@ struct ContentView: View {
     
     var cardBuilder: some View {
         LazyVGrid(columns: [GridItem(.adaptive (minimum: 110))]) {
+            var contents = emojis[theme]?.shuffled()
             ForEach(0..<emojis[theme]!.count, id: \.self) { index in
-                CardView(Content: emojis[theme]![index])
+                CardView(Content: contents![index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
