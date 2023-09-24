@@ -10,16 +10,16 @@ struct ContentView: View {
         VStack {
             Text("Memorize!").font(.title)
             ScrollView {
-                CardBuilder(theme: theme)
+                cardBuilder
             }
             Spacer()
             buttons
         }
         .foregroundColor(.teal)
-        .padding()
+        .padding([.top, .leading, .trailing])
     }
     
-    func CardBuilder(theme: Int) -> some View {
+    var cardBuilder: some View {
         LazyVGrid(columns: [GridItem(.adaptive (minimum: 110))]) {
             ForEach(0..<emojis[theme]!.count, id: \.self) { index in
                 CardView(Content: emojis[theme]![index])
@@ -30,8 +30,40 @@ struct ContentView: View {
     
     var buttons: some View {
         HStack {
-            
+            Spacer()
+            flagButton
+            Spacer()
+            animalButton
+            Spacer()
+            carButton
+            Spacer()
         }
+        .font(.title2)
+        .padding(.horizontal)
+    }
+
+    func makeButton(Themes: Int, Symbol: String,
+        text: String) -> some View {
+        VStack {
+            Button(action: {
+                theme = Themes
+            }, label: {
+                Image (systemName: Symbol)
+            })
+            Text(text).font(.headline)
+        }
+    }
+    
+    var flagButton: some View {
+        makeButton(Themes: 1, Symbol: "flag.fill", text: "Flags")
+    }
+    
+    var animalButton: some View {
+        makeButton(Themes: 2, Symbol: "teddybear.fill", text: "Animals")
+    }
+    
+    var carButton: some View {
+        makeButton(Themes: 3, Symbol: "car.fill", text: "Cars")
     }
 }
 
