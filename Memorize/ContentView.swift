@@ -1,54 +1,37 @@
 import SwiftUI
 
 struct ContentView: View {
-    let Emojis: [String] = ["👻", "🐼", "🐇", "🐹", "🐈"]
-    @State var CardCount: Int = 4
+    let emojis = [1 : ["🇰🇷", "🇬🇷", "🇸🇪", "🇨🇦", "🇮🇹"],
+                  2 : ["👻", "🐼", "🐇", "🐹", "🐈"],
+                  3 : ["🏎️", "🚓", "🚕", "🚙", "🚑"]]
+    @State var theme: Int = 1
+    
     var body: some View {
         VStack {
             Text("Memorize!").font(.title)
             ScrollView {
-                cards
+                CardBuilder(theme: theme)
             }
             Spacer()
-            cardAdjusters
+            buttons
         }
         .foregroundColor(.teal)
         .padding()
     }
     
-    var cards: some View {
+    func CardBuilder(theme: Int) -> some View {
         LazyVGrid(columns: [GridItem(.adaptive (minimum: 110))]) {
-            ForEach(0..<CardCount, id: \.self) { index in
-                CardView(Content: Emojis[index])
+            ForEach(0..<emojis[theme]!.count, id: \.self) { index in
+                CardView(Content: emojis[theme]![index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
     }
     
-    var cardAdjusters: some View {
+    var buttons: some View {
         HStack {
-            minus
-            Spacer()
-            plus
+            
         }
-        .font(.largeTitle)
-    }
-    
-    func CardCountAdjusters(by offset: Int, symbol: String) -> some View {
-        Button(action: {
-            CardCount += offset
-        }, label: {
-            Image (systemName: symbol)
-        })
-        .disabled(CardCount + offset < 1 || CardCount + offset > Emojis.count)
-    }
-    
-    var minus: some View {
-        CardCountAdjusters(by: -1, symbol: "minus.square")
-    }
-    
-    var plus: some View {
-        CardCountAdjusters(by: 1, symbol: "plus.square")
     }
 }
 
